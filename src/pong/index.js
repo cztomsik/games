@@ -1,3 +1,5 @@
+import keys from './keys'
+
 const WIDTH = 800
 const HEIGHT = 600
 
@@ -12,13 +14,9 @@ canvas.height = HEIGHT
 const ctx = canvas.getContext('2d')
 document.body.appendChild(canvas)
 
-const keys = {}
-window.addEventListener('keydown', e => keys[e.key] = true)
-window.addEventListener('keyup', e => keys[e.key] = false)
-
-const player = {}
-const opponent = {}
-const ball = {}
+const player = {x: null, y: null, width: PADDLE_WIDTH, height: PADDLE_HEIGHT}
+const opponent = {x: null, y: null, width: PADDLE_WIDTH, height: PADDLE_HEIGHT}
+const ball = {x: null, y: null, width: BALL_SIZE, height: BALL_SIZE}
 
 const newGame = () => {
   player.score = 0
@@ -28,10 +26,10 @@ const newGame = () => {
 }
 
 const newSet = () => {
-  player.y = (HEIGHT - PADDLE_HEIGHT) / 2
-  opponent.y = (HEIGHT - PADDLE_HEIGHT) / 2
-  ball.x = (WIDTH - BALL_SIZE) / 2
-  ball.y = (HEIGHT - BALL_SIZE) / 2
+  player.y = (HEIGHT - player.height) / 2
+  opponent.y = (HEIGHT - opponent.height) / 2
+  ball.x = (WIDTH - ball.width) / 2
+  ball.y = (HEIGHT - ball.height) / 2
   ball.speedY = 0
 }
 
@@ -68,11 +66,11 @@ const update = () => {
     newSet()
   }
 
-  if ((ball.x < PADDLE_WIDTH) && (ball.y > opponent.y) && (ball.y < (opponent.y + PADDLE_HEIGHT))) {
+  if ((ball.x < opponent.width) && (ball.y > opponent.y) && (ball.y < (opponent.y + opponent.height))) {
     ball.speedX *= -1
   }
 
-  if ((ball.x > (WIDTH - PADDLE_WIDTH)) && (ball.y > player.y) && (ball.y < (player.y + PADDLE_HEIGHT))) {
+  if ((ball.x > (WIDTH - player.width)) && (ball.y > player.y) && (ball.y < (player.y + player.height))) {
     ball.speedX *= -1
 
     if (keys.ArrowDown) {
@@ -84,15 +82,15 @@ const update = () => {
     }
   }
 
-  const diff = Math.max(-10, Math.min(10, ball.y - opponent.y - ((PADDLE_HEIGHT - BALL_SIZE) / 2)))
-  opponent.y = Math.max(0, Math.min(HEIGHT - PADDLE_HEIGHT, opponent.y + diff))
+  const diff = Math.max(-10, Math.min(10, ball.y - opponent.y - ((opponent.height - ball.height) / 2)))
+  opponent.y = Math.max(0, Math.min(HEIGHT - opponent.height, opponent.y + diff))
 
   if (keys.ArrowUp) {
     player.y = Math.max(0, player.y - 10)
   }
 
   if (keys.ArrowDown) {
-    player.y = Math.min(HEIGHT - PADDLE_HEIGHT, player.y + 10)
+    player.y = Math.min(HEIGHT - player.height, player.y + 10)
   }
 
   ball.x += ball.speedX
@@ -105,11 +103,11 @@ const render = () => {
 
   ctx.fillStyle = '#fff'
 
-  ctx.fillRect(0, opponent.y, PADDLE_WIDTH, PADDLE_HEIGHT)
+  ctx.fillRect(0, opponent.y, opponent.width, opponent.height)
 
-  ctx.fillRect(WIDTH - PADDLE_WIDTH, player.y, PADDLE_WIDTH, PADDLE_HEIGHT)
+  ctx.fillRect(WIDTH - player.width, player.y, player.width, player.height)
 
-  ctx.fillRect(ball.x, ball.y, BALL_SIZE, BALL_SIZE)
+  ctx.fillRect(ball.x, ball.y, ball.width, ball.height)
 
   ctx.font = '24px sans-serif';
   ctx.fillText(opponent.score, 20, 40)

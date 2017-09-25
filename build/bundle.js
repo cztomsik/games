@@ -57,7 +57,7 @@
 /******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
 /******/
 /******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "";
+/******/ 	__webpack_require__.p = "build";
 /******/
 /******/ 	// Load entry module and return exports
 /******/ 	return __webpack_require__(__webpack_require__.s = 0);
@@ -70,13 +70,16 @@
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__pong__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__pong___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__pong__);
 
 
 
 /***/ }),
 /* 1 */
-/***/ (function(module, exports) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__keys__ = __webpack_require__(2);
+
 
 const WIDTH = 800
 const HEIGHT = 600
@@ -92,13 +95,9 @@ canvas.height = HEIGHT
 const ctx = canvas.getContext('2d')
 document.body.appendChild(canvas)
 
-const keys = {}
-window.addEventListener('keydown', e => keys[e.key] = true)
-window.addEventListener('keyup', e => keys[e.key] = false)
-
-const player = {}
-const opponent = {}
-const ball = {}
+const player = {x: null, y: null, width: PADDLE_WIDTH, height: PADDLE_HEIGHT}
+const opponent = {x: null, y: null, width: PADDLE_WIDTH, height: PADDLE_HEIGHT}
+const ball = {x: null, y: null, width: BALL_SIZE, height: BALL_SIZE}
 
 const newGame = () => {
   player.score = 0
@@ -108,10 +107,10 @@ const newGame = () => {
 }
 
 const newSet = () => {
-  player.y = (HEIGHT - PADDLE_HEIGHT) / 2
-  opponent.y = (HEIGHT - PADDLE_HEIGHT) / 2
-  ball.x = (WIDTH - BALL_SIZE) / 2
-  ball.y = (HEIGHT - BALL_SIZE) / 2
+  player.y = (HEIGHT - player.height) / 2
+  opponent.y = (HEIGHT - opponent.height) / 2
+  ball.x = (WIDTH - ball.width) / 2
+  ball.y = (HEIGHT - ball.height) / 2
   ball.speedY = 0
 }
 
@@ -148,31 +147,31 @@ const update = () => {
     newSet()
   }
 
-  if ((ball.x < PADDLE_WIDTH) && (ball.y > opponent.y) && (ball.y < (opponent.y + PADDLE_HEIGHT))) {
+  if ((ball.x < opponent.width) && (ball.y > opponent.y) && (ball.y < (opponent.y + opponent.height))) {
     ball.speedX *= -1
   }
 
-  if ((ball.x > (WIDTH - PADDLE_WIDTH)) && (ball.y > player.y) && (ball.y < (player.y + PADDLE_HEIGHT))) {
+  if ((ball.x > (WIDTH - player.width)) && (ball.y > player.y) && (ball.y < (player.y + player.height))) {
     ball.speedX *= -1
 
-    if (keys.ArrowDown) {
+    if (__WEBPACK_IMPORTED_MODULE_0__keys__["a" /* default */].ArrowDown) {
       ball.speedY += 2.5
     }
 
-    if (keys.ArrowUp) {
+    if (__WEBPACK_IMPORTED_MODULE_0__keys__["a" /* default */].ArrowUp) {
       ball.speedY -= 2.5
     }
   }
 
-  const diff = Math.max(-10, Math.min(10, ball.y - opponent.y - ((PADDLE_HEIGHT - BALL_SIZE) / 2)))
-  opponent.y = Math.max(0, Math.min(HEIGHT - PADDLE_HEIGHT, opponent.y + diff))
+  const diff = Math.max(-10, Math.min(10, ball.y - opponent.y - ((opponent.height - ball.height) / 2)))
+  opponent.y = Math.max(0, Math.min(HEIGHT - opponent.height, opponent.y + diff))
 
-  if (keys.ArrowUp) {
+  if (__WEBPACK_IMPORTED_MODULE_0__keys__["a" /* default */].ArrowUp) {
     player.y = Math.max(0, player.y - 10)
   }
 
-  if (keys.ArrowDown) {
-    player.y = Math.min(HEIGHT - PADDLE_HEIGHT, player.y + 10)
+  if (__WEBPACK_IMPORTED_MODULE_0__keys__["a" /* default */].ArrowDown) {
+    player.y = Math.min(HEIGHT - player.height, player.y + 10)
   }
 
   ball.x += ball.speedX
@@ -185,11 +184,11 @@ const render = () => {
 
   ctx.fillStyle = '#fff'
 
-  ctx.fillRect(0, opponent.y, PADDLE_WIDTH, PADDLE_HEIGHT)
+  ctx.fillRect(0, opponent.y, opponent.width, opponent.height)
 
-  ctx.fillRect(WIDTH - PADDLE_WIDTH, player.y, PADDLE_WIDTH, PADDLE_HEIGHT)
+  ctx.fillRect(WIDTH - player.width, player.y, player.width, player.height)
 
-  ctx.fillRect(ball.x, ball.y, BALL_SIZE, BALL_SIZE)
+  ctx.fillRect(ball.x, ball.y, ball.width, ball.height)
 
   ctx.font = '24px sans-serif';
   ctx.fillText(opponent.score, 20, 40)
@@ -200,6 +199,19 @@ const render = () => {
 
 newGame()
 loop()
+
+
+/***/ }),
+/* 2 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+const keys = {}
+
+window.addEventListener('keydown', e => keys[e.key] = true)
+window.addEventListener('keyup', e => keys[e.key] = false)
+
+/* harmony default export */ __webpack_exports__["a"] = (keys);
 
 
 /***/ })
