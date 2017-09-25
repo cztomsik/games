@@ -78,26 +78,73 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__keys__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__game__ = __webpack_require__(2);
+
+
+const canvas = document.createElement('canvas')
+canvas.width = __WEBPACK_IMPORTED_MODULE_0__game__["b" /* WIDTH */]
+canvas.height = __WEBPACK_IMPORTED_MODULE_0__game__["a" /* HEIGHT */]
+const ctx = canvas.getContext('2d')
+document.body.appendChild(canvas)
+
+const loop = () => {
+  Object(__WEBPACK_IMPORTED_MODULE_0__game__["g" /* update */])()
+  render()
+  requestAnimationFrame(loop)
+}
+
+const render = () => {
+  ctx.fillStyle = '#000'
+  ctx.fillRect(0, 0, __WEBPACK_IMPORTED_MODULE_0__game__["b" /* WIDTH */], __WEBPACK_IMPORTED_MODULE_0__game__["a" /* HEIGHT */])
+
+  ctx.fillStyle = '#fff'
+
+  ctx.fillRect(0, __WEBPACK_IMPORTED_MODULE_0__game__["e" /* opponent */].y, __WEBPACK_IMPORTED_MODULE_0__game__["e" /* opponent */].width, __WEBPACK_IMPORTED_MODULE_0__game__["e" /* opponent */].height)
+
+  ctx.fillRect(__WEBPACK_IMPORTED_MODULE_0__game__["b" /* WIDTH */] - __WEBPACK_IMPORTED_MODULE_0__game__["f" /* player */].width, __WEBPACK_IMPORTED_MODULE_0__game__["f" /* player */].y, __WEBPACK_IMPORTED_MODULE_0__game__["f" /* player */].width, __WEBPACK_IMPORTED_MODULE_0__game__["f" /* player */].height)
+
+  ctx.fillRect(__WEBPACK_IMPORTED_MODULE_0__game__["c" /* ball */].x, __WEBPACK_IMPORTED_MODULE_0__game__["c" /* ball */].y, __WEBPACK_IMPORTED_MODULE_0__game__["c" /* ball */].width, __WEBPACK_IMPORTED_MODULE_0__game__["c" /* ball */].height)
+
+  ctx.font = '24px sans-serif';
+  ctx.fillText(__WEBPACK_IMPORTED_MODULE_0__game__["e" /* opponent */].score, 20, 40)
+
+  ctx.font = '24px sans-serif';
+  ctx.fillText(__WEBPACK_IMPORTED_MODULE_0__game__["f" /* player */].score, __WEBPACK_IMPORTED_MODULE_0__game__["b" /* WIDTH */] - 60, 40)
+}
+
+Object(__WEBPACK_IMPORTED_MODULE_0__game__["d" /* newGame */])()
+loop()
+
+
+/***/ }),
+/* 2 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__keys__ = __webpack_require__(3);
 
 
 const WIDTH = 800
+/* harmony export (immutable) */ __webpack_exports__["b"] = WIDTH;
+
 const HEIGHT = 600
+/* harmony export (immutable) */ __webpack_exports__["a"] = HEIGHT;
+
 
 const PADDLE_WIDTH = 10
 const PADDLE_HEIGHT = 100
 
 const BALL_SIZE = 10
 
-const canvas = document.createElement('canvas')
-canvas.width = WIDTH
-canvas.height = HEIGHT
-const ctx = canvas.getContext('2d')
-document.body.appendChild(canvas)
-
 const player = {x: null, y: null, width: PADDLE_WIDTH, height: PADDLE_HEIGHT}
+/* harmony export (immutable) */ __webpack_exports__["f"] = player;
+
 const opponent = {x: null, y: null, width: PADDLE_WIDTH, height: PADDLE_HEIGHT}
+/* harmony export (immutable) */ __webpack_exports__["e"] = opponent;
+
 const ball = {x: null, y: null, width: BALL_SIZE, height: BALL_SIZE}
+/* harmony export (immutable) */ __webpack_exports__["c"] = ball;
+
 
 const newGame = () => {
   player.score = 0
@@ -105,6 +152,8 @@ const newGame = () => {
   ball.speedX = 10
   newSet()
 }
+/* harmony export (immutable) */ __webpack_exports__["d"] = newGame;
+
 
 const newSet = () => {
   player.y = (HEIGHT - player.height) / 2
@@ -112,12 +161,6 @@ const newSet = () => {
   ball.x = (WIDTH - ball.width) / 2
   ball.y = (HEIGHT - ball.height) / 2
   ball.speedY = 0
-}
-
-const loop = () => {
-  update()
-  render()
-  requestAnimationFrame(loop)
 }
 
 const update = () => {
@@ -177,32 +220,12 @@ const update = () => {
   ball.x += ball.speedX
   ball.y += ball.speedY
 }
+/* harmony export (immutable) */ __webpack_exports__["g"] = update;
 
-const render = () => {
-  ctx.fillStyle = '#000'
-  ctx.fillRect(0, 0, WIDTH, HEIGHT)
-
-  ctx.fillStyle = '#fff'
-
-  ctx.fillRect(0, opponent.y, opponent.width, opponent.height)
-
-  ctx.fillRect(WIDTH - player.width, player.y, player.width, player.height)
-
-  ctx.fillRect(ball.x, ball.y, ball.width, ball.height)
-
-  ctx.font = '24px sans-serif';
-  ctx.fillText(opponent.score, 20, 40)
-
-  ctx.font = '24px sans-serif';
-  ctx.fillText(player.score, WIDTH - 60, 40)
-}
-
-newGame()
-loop()
 
 
 /***/ }),
-/* 2 */
+/* 3 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
