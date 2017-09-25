@@ -52,11 +52,7 @@ const update = () => {
     return newGame()
   }
 
-  if (ball.y < 0) {
-    ball.speedY *= -1
-  }
-
-  if (ball.y > HEIGHT) {
+  if ((ball.y < 0) || (ball.y > HEIGHT)) {
     ball.speedY *= -1
   }
 
