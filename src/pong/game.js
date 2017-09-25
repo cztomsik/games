@@ -8,8 +8,8 @@ const PADDLE_HEIGHT = 100
 
 const BALL_SIZE = 10
 
-export const player = {x: null, y: null, width: PADDLE_WIDTH, height: PADDLE_HEIGHT}
-export const opponent = {x: null, y: null, width: PADDLE_WIDTH, height: PADDLE_HEIGHT}
+export const player = {x: WIDTH - PADDLE_WIDTH, y: null, width: PADDLE_WIDTH, height: PADDLE_HEIGHT}
+export const opponent = {x: 0, y: null, width: PADDLE_WIDTH, height: PADDLE_HEIGHT}
 export const ball = {x: null, y: null, width: BALL_SIZE, height: BALL_SIZE}
 
 export const newGame = () => {
@@ -48,17 +48,17 @@ export const update = () => {
     newSet()
   }
 
-  if (ball.x > WIDTH) {
+  if (ball.x > (player.x + player.width)) {
     ball.speedX = 10
     opponent.score++
     newSet()
   }
 
-  if ((ball.x < opponent.width) && (ball.y > opponent.y) && (ball.y < (opponent.y + opponent.height))) {
+  if ((ball.x < (opponent.x + opponent.width)) && (ball.y > opponent.y) && (ball.y < (opponent.y + opponent.height))) {
     ball.speedX *= -1
   }
 
-  if ((ball.x > (WIDTH - player.width)) && (ball.y > player.y) && (ball.y < (player.y + player.height))) {
+  if ((ball.x > player.x) && (ball.y > player.y) && (ball.y < (player.y + player.height))) {
     ball.speedX *= -1
 
     if (keys.ArrowDown) {
