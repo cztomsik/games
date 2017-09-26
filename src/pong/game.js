@@ -1,4 +1,4 @@
-import keys from './keys'
+import keys from '../keys'
 
 export const WIDTH = 800
 export const HEIGHT = 600
@@ -8,8 +8,8 @@ const PADDLE_HEIGHT = 100
 
 const BALL_SIZE = 10
 
-export const player = {x: WIDTH - PADDLE_WIDTH, y: null, width: PADDLE_WIDTH, height: PADDLE_HEIGHT}
-export const opponent = {x: 0, y: null, width: PADDLE_WIDTH, height: PADDLE_HEIGHT}
+export const player = {x: WIDTH - PADDLE_WIDTH, y: null, width: PADDLE_WIDTH, height: PADDLE_HEIGHT, score: null}
+export const opponent = {x: 0, y: null, width: PADDLE_WIDTH, height: PADDLE_HEIGHT, score: null}
 export const ball = {x: null, y: null, width: BALL_SIZE, height: BALL_SIZE}
 
 export const newGame = () => {
