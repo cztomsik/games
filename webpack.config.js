@@ -29,5 +29,11 @@ module.exports = {
         return module.context && module.context.indexOf("node_modules") !== -1;
       }
     })
-  ]
+  ],
+  externals: {
+    react: 'React',
+    'react-dom': 'ReactDOM',
+    'pixi.js': 'PIXI',
+    'lodash': '_'
+  }
 }

@@ -1,5 +1,9 @@
-import {Application, Sprite, Text, Graphics} from 'pixi.js'
+import React from 'react'
+import ReactDOM from 'react-dom'
+import _ from 'lodash'
+import {Graphics} from 'pixi.js'
 import {WIDTH, HEIGHT, newGame, update, player, opponent, ball} from './game'
+import {Application, Sprite, Text} from './lib'
 
 // textures
 const g1 = new Graphics()
@@ -12,22 +16,10 @@ g2.beginFill(0xFFFFFF)
 g2.drawRect(0, 0, 10, 10)
 const BALL = g2.generateCanvasTexture()
 
-const app = new Application()
-const playerScore = new Text('', {fontFamily : 'Arial', fontSize: 24, fill : 0xFFFFFF})
-const playerSprite = new Sprite(PADDLE)
-const opponentScore = new Text('', {fontFamily : 'Arial', fontSize: 24, fill : 0xFFFFFF})
-const opponentSprite = new Sprite(PADDLE)
-const ballSprite = new Sprite(BALL)
-playerScore.x = WIDTH - 50
-playerScore.y = 10
-opponentScore.x = 30
-opponentScore.y = 10
-app.stage.addChild(playerScore)
-app.stage.addChild(playerSprite)
-app.stage.addChild(opponentScore)
-app.stage.addChild(opponentSprite)
-app.stage.addChild(ballSprite)
-document.body.appendChild(app.view)
+const TEXT_STYLE = {fontFamily : 'Arial', fontSize: 24, fill : 0xFFFFFF}
+
+const el = document.createElement('div')
+document.body.appendChild(el)
 
 const loop = () => {
   update()
@@ -36,18 +28,18 @@ const loop = () => {
 }
 
 const render = () => {
-  playerSprite.x = player.x
-  playerSprite.y = player.y
-
-  opponentSprite.x = opponent.x
-  opponentSprite.y = opponent.y
-
-  ballSprite.x = ball.x
-  ballSprite.y = ball.y
-
-  opponentScore.text = opponent.score
-  playerScore.text = player.score
+  ReactDOM.render(<Pong />, el)
 }
+
+const Pong = () =>
+  <Application width={WIDTH} height={HEIGHT}>
+    <Sprite texture={PADDLE} x={opponent.x} y={opponent.y} />
+    <Sprite texture={BALL} x={ball.x} y={ball.y} />
+    <Sprite texture={PADDLE} x={player.x} y={player.y} />
+
+    <Text style={TEXT_STYLE} text={opponent.score} x={30} y={10} />
+    <Text style={TEXT_STYLE} text={player.score} x={WIDTH - 50} y={10} />
+  </Application>
 
 newGame()
 loop()
